@@ -30,8 +30,23 @@ mkdir -p \
     bootstrap/cache
 chown -R www-data:www-data /var/data storage bootstrap/cache
 
+sqlite_database="${DB_DATABASE:-/var/www/database/database.sqlite}"
+case "$sqlite_database" in
+    /*) ;;
+    *) sqlite_database="$(pwd)/$sqlite_database" ;;
+esac
+export DB_DATABASE="$sqlite_database"
+sqlite_directory="$(dirname "$sqlite_database")"
+mkdir -p "$sqlite_directory"
+touch "$sqlite_database"
+chown www-data:www-data "$sqlite_directory" "$sqlite_database"
+chmod 775 "$sqlite_directory"
+chmod 664 "$sqlite_database"
+
 if [ ! -e public/storage ] && [ ! -L public/storage ]; then
     php artisan storage:link
 fi
+
+php artisan migrate --force
 
 exec apache2-foreground
