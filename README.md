@@ -6,7 +6,7 @@
 # Project setup
 1. clone the repository:
 ```
-https://github.com/Resha-Munikar/Eventify.git
+https://github.com/bristimaharjan/Eventify.git
 ```
 2. Install Dependencies:
    ```
