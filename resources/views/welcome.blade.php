@@ -697,7 +697,7 @@
                 
                 <!-- Phone Mockup 1 -->
                 <div class="mt-8 pt-4 flex justify-center -mb-10 group-hover:-translate-y-2 transition-transform duration-300">
-                    <div class="w-56 sm:w-60 rounded-t-3xl overflow-hidden shadow-2xl border-4 border-b-0 border-gray-900 bg-white">
+                    <div class="w-56 sm:w-60 rounded-t-3xl overflow-hidden shadow-2xl bg-white">
                         <img src="{{ asset('uploads/a0e119fe69f66a788f1ab7633889c4b94d308eaf.png') }}" alt="Step 1 Vendor Mockup" class="w-full object-cover object-top" />
                     </div>
                 </div>
@@ -717,7 +717,7 @@
                 
                 <!-- Phone Mockup 2: Interactive Styled Card -->
                 <div class="mt-8 pt-4 flex justify-center -mb-10 group-hover:-translate-y-2 transition-transform duration-300">
-                    <div class="w-56 sm:w-60 rounded-t-3xl overflow-hidden shadow-2xl border-4 border-b-0 border-gray-900 bg-white dark:bg-gray-900 p-3 space-y-3">
+                    <div class="w-56 sm:w-60 rounded-t-3xl overflow-hidden shadow-2xl bg-white dark:bg-gray-900 p-3 space-y-3">
                         <div class="h-24 rounded-xl overflow-hidden relative">
                             <img src="{{ asset('uploads/a9e3088f2698f4b567d9a1c8e03939eaf4410e02.png') }}" alt="Event setup banner" class="w-full h-full object-cover" />
                             <div class="absolute bottom-1 left-2 bg-[#6C5CE7] text-white text-[9px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
@@ -751,7 +751,7 @@
                 
                 <!-- Phone Mockup 3 -->
                 <div class="mt-8 pt-4 flex justify-center -mb-10 group-hover:-translate-y-2 transition-transform duration-300">
-                    <div class="w-56 sm:w-60 rounded-t-3xl overflow-hidden shadow-2xl border-4 border-b-0 border-gray-900 bg-white">
+                    <div class="w-56 sm:w-60 rounded-t-3xl overflow-hidden shadow-2xl bg-white">
                         <img src="{{ asset('uploads/40c6f467804771131403928c8429669b565a97a3.png') }}" alt="Step 3 Sales Dashboard" class="w-full object-cover object-top" />
                     </div>
                 </div>

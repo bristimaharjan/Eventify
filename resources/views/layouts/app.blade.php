@@ -61,13 +61,13 @@
             </nav>
 
             <!-- Navbar Right Section -->
-            <div class="flex items-center space-x-1 sm:space-x-4 relative shrink-0">
+            <div class="flex items-center gap-2 sm:gap-3 relative shrink-0">
                 <button
                     type="button"
                     @click="mobileMenuOpen = !mobileMenuOpen"
                     :aria-expanded="mobileMenuOpen.toString()"
                     aria-label="Toggle navigation menu"
-                    class="md:hidden p-2 rounded-lg bg-white/90 text-gray-800 hover:bg-white focus:outline-none focus:ring-2 focus:ring-white"
+                    class="md:hidden flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/90 text-gray-800 hover:bg-white focus:outline-none focus:ring-2 focus:ring-white"
                 >
                     <svg x-show="!mobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -78,20 +78,22 @@
                 </button>
                 @guest
                     <!-- When user is NOT logged in -->
-                    <a href="{{ route('login') }}" class="bg-white dark:bg-gray-700 text-[#8D85EC] dark:text-white font-semibold px-3 sm:px-5 py-2 rounded-full text-xs sm:text-base hover:bg-gray-100 dark:hover:bg-gray-600 transition"> Login </a> 
-                    <a href="{{ route('register') }}" class="bg-[#7b76e4] text-white dark:bg-gray-700 font-semibold px-3 sm:px-5 py-2 rounded-full text-xs sm:text-base hover:bg-[#6f69d9] transition"> Sign Up </a>
+                    <div class="hidden md:flex items-center space-x-2 sm:space-x-4">
+                        <a href="{{ route('login') }}" class="bg-white dark:bg-gray-700 text-[#8D85EC] dark:text-white font-semibold px-3 sm:px-5 py-2 rounded-full text-xs sm:text-base hover:bg-gray-100 dark:hover:bg-gray-600 transition"> Login </a>
+                        <a href="{{ route('register') }}" class="bg-[#7b76e4] text-white dark:bg-gray-700 font-semibold px-3 sm:px-5 py-2 rounded-full text-xs sm:text-base hover:bg-[#6f69d9] transition"> Sign Up </a>
+                    </div>
                 @endguest
 
                 @auth
                 <div x-data="{ open: false }" class="relative">
                     <!-- Profile button -->
-                    <button @click="open = !open" class="flex items-center gap-2 focus:outline-none p-1 rounded-full hover:bg-white/20 transition">
+                    <button @click="open = !open" aria-label="Open profile menu" :aria-expanded="open.toString()" class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full hover:bg-white/20 transition focus:outline-none focus:ring-2 focus:ring-white">
                         @if(Auth::user()->profile_photo_url)
                             <img src="{{ Auth::user()->profile_photo_url }}"
                                 alt="{{ Auth::user()->name }}"
-                                class="w-8 h-8 rounded-full object-cover border-2 border-white shadow-xs">
+                                class="h-12 w-12 rounded-full object-cover border-2 border-white shadow-xs">
                         @else
-                            <div class="w-8 h-8 rounded-full bg-white text-[#8D85EC] font-bold flex items-center justify-center text-xs shadow-xs border-2 border-white">
+                            <div class="h-12 w-12 rounded-full bg-white text-[#8D85EC] font-bold flex items-center justify-center text-xs shadow-xs border-2 border-white">
                                 {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                             </div>
                         @endif
@@ -182,7 +184,7 @@
                 @endauth
 
                 <!-- Theme toggle button -->
-                <button id="theme-toggle" class="p-2 rounded-full bg-white dark:bg-gray-700 focus:outline-none" aria-label="Toggle theme">
+                <button id="theme-toggle" class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-white" aria-label="Toggle theme">
                     <!-- Moon icon -->
                     <svg id="icon-moon" class="w-6 h-6 text-gray-800 dark:text-gray-200" fill="currentColor" viewBox="0 0 20 20" style="display: none;">
                         <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
@@ -200,6 +202,12 @@
                 <a href="{{ route('about') }}" class="rounded-lg px-4 py-3 font-semibold text-gray-800 dark:text-white hover:bg-purple-100 dark:hover:bg-gray-700">About Us</a>
                 <a href="{{ route('events') }}" class="rounded-lg px-4 py-3 font-semibold text-gray-800 dark:text-white hover:bg-purple-100 dark:hover:bg-gray-700">Events</a>
                 <a href="{{ route('contact') }}" class="rounded-lg px-4 py-3 font-semibold text-gray-800 dark:text-white hover:bg-purple-100 dark:hover:bg-gray-700">Contact</a>
+                @guest
+                    <div class="grid grid-cols-2 gap-2 border-t border-gray-200 dark:border-gray-700 pt-3 mt-2">
+                        <a href="{{ route('login') }}" class="rounded-lg bg-purple-100 dark:bg-gray-700 px-4 py-3 text-center font-semibold text-[#8D85EC] dark:text-white hover:bg-purple-200 dark:hover:bg-gray-600 transition">Login</a>
+                        <a href="{{ route('register') }}" class="rounded-lg bg-[#7b76e4] px-4 py-3 text-center font-semibold text-white hover:bg-[#6f69d9] transition">Sign Up</a>
+                    </div>
+                @endguest
             </div>
         </nav>
         </header>
