@@ -3,27 +3,27 @@
 @section('title', 'Contact Us')
 
 @section('content')
-<section class="relative w-full bg-[#d9d4f7] dark:bg-gray-800 h-[90vh]  z-[1]">
-  <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between px-6 md:px-12 py-28">
+<section class="relative z-[1] w-full bg-[#d9d4f7] dark:bg-gray-800">
+  <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10 px-4 sm:px-6 md:px-12 pt-12 pb-32 sm:pt-16 md:py-24">
     <!-- Left Content -->
-    <div class="max-w-lg text-center md:text-left mb-10 md:mb-0 z-[0] relative">
+    <div class="relative z-[0] w-full max-w-lg text-center md:text-left">
       <h1 class="text-3xl md:text-4xl font-bold leading-tight mb-4">
         Get in Touch <br />
         <span class="text-[#8D85EC] dark:text-[#a78df0]">We’re Here to Help</span>
       </h1>
-      <p class="text-base md:text-lg text-gray-600 dark:text-gray-300 mb-6">
+      <p class="mb-6 text-base md:text-lg text-gray-600 dark:text-gray-300">
         Have questions or need assistance? Reach out to us, and our team will be happy to support you.
       </p>
       <a href="{{ route('contact') }}" class="bg-[#8D85EC] dark:bg-[#a78df0] text-white px-6 py-3 rounded-lg text-lg font-semibold hover:opacity-90 transition">Contact Us</a>
     </div>
 
     <!-- Image Section -->
-    <div class="w-full md:w-1/2 flex justify-center items-center relative z-[0]">
-      <div class="relative w-120 h-80">
-        <div class="absolute top-0 left-0 w-120 h-80 rounded-lg shadow-lg">
+    <div class="relative z-[0] flex w-full items-center justify-center md:w-1/2">
+      <div class="relative mx-2 aspect-[3/2] w-full max-w-[30rem]">
+        <div class="absolute inset-0 overflow-hidden rounded-lg shadow-lg">
           <img src="{{ asset('uploads/arch.jpg') }}" alt="Arch Image" class="w-full h-full object-cover" />
         </div>
-        <div class="absolute bottom-0 right-0 w-48 h-48 rounded-lg border-4 border-white shadow-lg transform translate-x-4 translate-y-4">
+        <div class="absolute bottom-2 right-2 h-28 w-28 translate-x-2 translate-y-2 overflow-hidden rounded-lg border-4 border-white shadow-lg sm:h-40 sm:w-40 md:h-48 md:w-48">
           <img src="{{ asset('uploads/circle.jpg') }}" alt="Circle Image" class="w-full h-full object-cover" />
         </div>
       </div>
@@ -39,10 +39,10 @@
 </section>
 
 <!-- Contact Form Section -->
-<div class="max-w-7xl mx-auto px-4 py-12 mb-8 bg-[#eae4f9] dark:bg-gray-600 rounded-xl shadow-lg">
-  <div class="grid md:grid-cols-2 gap-8">
+<div class="mx-auto mb-8 w-full max-w-7xl rounded-xl bg-[#eae4f9] px-3 py-6 shadow-lg sm:px-6 sm:py-10 lg:px-8 lg:py-12 dark:bg-gray-600">
+  <div class="grid min-w-0 grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
     <!-- Left: Contact Form -->
-    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+    <div class="min-w-0 rounded-lg bg-white p-4 shadow-lg sm:p-6 dark:bg-gray-800">
       <h2 class="text-2xl font-semibold mb-4">Send a Message:</h2>
       
       <form action="{{ route('contact.store') }}" method="POST" class="space-y-4" id="contactForm">
@@ -54,7 +54,6 @@
             <option value="general" {{ (old('type', request('type')) === 'general') ? 'selected' : '' }}>General Inquiry (Admin)</option>
             <option value="vendor" {{ (old('type', request('type')) === 'vendor') ? 'selected' : '' }}>Vendor Inquiry</option>
             <option value="event" {{ (old('type', request('type')) === 'event') ? 'selected' : '' }}>Event Inquiry</option>
-            <option value="venue" {{ (old('type', request('type')) === 'venue') ? 'selected' : '' }}>Venue Inquiry</option>
           </select>
         </div>
 
@@ -78,17 +77,6 @@
     @endforeach
   </select>
 </div>
-<!-- Venue Selection -->
-<div id="venueDiv" >
-  <label for="venue_id" class="block mb-1 text-sm font-semibold text-gray-700 dark:text-gray-200">Select Venue:</label>
-  <select id="venue_id" name="venue_id" class="w-full p-3 rounded-lg border border-gray-300 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#8D85EC]">
-    <option value="">-- Select Venue --</option>
-    @foreach($venues ?? [] as $venue)
-      <option value="{{ $venue->id }}" {{ (old('venue_id', request('venue_id')) == $venue->id) ? 'selected' : '' }}>{{ $venue->venue_name }}</option>
-    @endforeach
-  </select>
-</div>
-
         <!-- Name -->
         <div>
           <label for="name" class="block mb-1 text-sm font-semibold text-gray-700 dark:text-gray-200">Your Name:</label>
@@ -125,40 +113,40 @@
     </div>
 
     <!-- Right: Contact Details + Map -->
-    <div class="space-y-4">
+    <div class="min-w-0 space-y-4">
       <!-- Contact Details Card -->
-      <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+      <div class="rounded-lg bg-white p-4 shadow-lg sm:p-6 dark:bg-gray-800">
         <h3 class="text-xl font-semibold mb-4">Contact Details</h3>
         <!-- Contact info with icons -->
-        <div class="flex items-center mb-2">
-          <svg class="w-5 h-5 mr-2 text-[#8D85EC]" fill="currentColor" viewBox="0 0 24 24">
+        <div class="mb-2 flex items-start gap-2">
+          <svg class="mt-0.5 h-5 w-5 shrink-0 text-[#8D85EC]" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5 14.5 7.62 14.5 9 13.38 11.5 12 11.5z" />
           </svg>
-          <span>Thamel, Kathmandu, Nepal</span>
+          <span class="min-w-0 break-words">Thamel, Kathmandu, Nepal</span>
         </div>
-        <div class="flex items-center mb-2">
-          <svg class="w-5 h-5 mr-2 text-[#8D85EC]" fill="currentColor" viewBox="0 0 24 24">
+        <div class="mb-2 flex items-start gap-2">
+          <svg class="mt-0.5 h-5 w-5 shrink-0 text-[#8D85EC]" fill="currentColor" viewBox="0 0 24 24">
             <path d="M21 8V7l-3 2-2-2-4 4-4-4-2 2-3-2v1l3 2 2-2 4 4 4-4 2 2 3-2z" />
           </svg>
-          <span>Tel: +977-1-4453000, 4422325</span>
+          <span class="min-w-0 break-words">Tel: +977-1-4453000, 4422325</span>
         </div>
-        <div class="flex items-center mb-2">
-          <svg class="w-5 h-5 mr-2 text-[#8D85EC]" fill="currentColor" viewBox="0 0 24 24">
+        <div class="mb-2 flex items-start gap-2">
+          <svg class="mt-0.5 h-5 w-5 shrink-0 text-[#8D85EC]" fill="currentColor" viewBox="0 0 24 24">
             <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
           </svg>
-          <span>Email: info@eventify.com</span>
+          <span class="min-w-0 break-words">Email: info@eventify.com</span>
         </div>
-        <div class="flex items-center mb-2">
-          <svg class="w-5 h-5 mr-2 text-[#8D85EC]" fill="currentColor" viewBox="0 0 24 24">
+        <div class="mb-2 flex items-start gap-2">
+          <svg class="mt-0.5 h-5 w-5 shrink-0 text-[#8D85EC]" fill="currentColor" viewBox="0 0 24 24">
             <path d="M21.71 20.29l-3-3c-.39-.39-1.02-.39-1.41 0l-1.3 1.3V17c0-3.86-3.14-7-7-7s-7 3.14-7 7v1.89l-1.3-1.3c-.39-.39-1.02-.39-1.41 0l-3 3c-.39.39-.39 1.02 0 1.41l1.3 1.3V21c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-2.29l1.3-1.3c.39-.39.39-1.02 0-1.41z" />
           </svg>
-          <span>WhatsApp / Viber: 9801044333</span>
+          <span class="min-w-0 break-words">WhatsApp / Viber: 9801044333</span>
         </div>
       </div>
 
       <!-- Map -->
-      <div class="rounded-lg overflow-hidden shadow-lg">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7064.147533277557!2d85.30712124163149!3d27.715008604712438!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb18fcb77fd4bd%3A0x58099b1deffed8d4!2sThamel%2C%20Kathmandu%2044600!5e0!3m2!1sen!2snp!4v1757670066744!5m2!1sen!2snp" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      <div class="aspect-video w-full overflow-hidden rounded-lg shadow-lg">
+        <iframe class="h-full w-full border-0" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7064.147533277557!2d85.30712124163149!3d27.715008604712438!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb18fcb77fd4bd%3A0x58099b1deffed8d4!2sThamel%2C%20Kathmandu%2044600!5e0!3m2!1sen!2snp!4v1757670066744!5m2!1sen!2snp" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
     </div>
   </div>
@@ -210,13 +198,11 @@
     const typeSelect = document.getElementById('type');
     const vendorDiv = document.getElementById('vendorDiv');
     const eventDiv = document.getElementById('eventDiv');
-    const venueDiv = document.getElementById('venueDiv');
 
     function updateInquiryFormVisibility() {
       const type = typeSelect.value;
       if (vendorDiv) vendorDiv.classList.toggle('hidden', type !== 'vendor');
       if (eventDiv) eventDiv.classList.toggle('hidden', type !== 'event');
-      if (venueDiv) venueDiv.classList.toggle('hidden', type !== 'venue');
     }
 
     typeSelect.addEventListener('change', updateInquiryFormVisibility);
