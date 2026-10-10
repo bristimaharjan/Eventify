@@ -67,7 +67,9 @@ class VendorKyc extends Model
      */
     public function getDocumentFrontUrlAttribute(): ?string
     {
-        return $this->document_front ? asset('storage/' . $this->document_front) : null;
+        return $this->document_front
+            ? route('vendor.kyc.document', ['kyc' => $this->id, 'type' => 'front'])
+            : null;
     }
 
     /**
@@ -75,7 +77,9 @@ class VendorKyc extends Model
      */
     public function getDocumentBackUrlAttribute(): ?string
     {
-        return $this->document_back ? asset('storage/' . $this->document_back) : null;
+        return $this->document_back
+            ? route('vendor.kyc.document', ['kyc' => $this->id, 'type' => 'back'])
+            : null;
     }
 
     /**
@@ -83,7 +87,9 @@ class VendorKyc extends Model
      */
     public function getCompanyRegistrationDocUrlAttribute(): ?string
     {
-        return $this->company_registration_doc ? asset('storage/' . $this->company_registration_doc) : null;
+        return $this->company_registration_doc
+            ? route('vendor.kyc.document', ['kyc' => $this->id, 'type' => 'company'])
+            : null;
     }
 
     /**

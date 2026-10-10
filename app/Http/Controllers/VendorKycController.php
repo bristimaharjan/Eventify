@@ -34,8 +34,12 @@ class VendorKycController extends Controller
         $user = Auth::user();
         $existingKyc = $user->kyc;
 
-        $hasExistingFront = $existingKyc && !empty($existingKyc->document_front);
-        $hasExistingBack = $existingKyc && !empty($existingKyc->document_back);
+        $hasExistingFront = $existingKyc
+            && $existingKyc->document_front
+            && Storage::disk('public')->exists($existingKyc->document_front);
+        $hasExistingBack = $existingKyc
+            && $existingKyc->document_back
+            && Storage::disk('public')->exists($existingKyc->document_back);
 
         $request->validate([
             'business_name' => 'required|string|max:255',
@@ -150,7 +154,8 @@ class VendorKycController extends Controller
         }
 
         // Check if user is retaining existing documents or replacing
-        $hasExistingFront = !empty($kyc->document_front);
+        $hasExistingFront = $kyc->document_front
+            && Storage::disk('public')->exists($kyc->document_front);
         $replaceFront = $request->hasFile('document_front');
         
         // If they don't have an existing front and didn't upload a new one, require it
@@ -160,7 +165,8 @@ class VendorKycController extends Controller
             ])->withInput();
         }
 
-        $hasExistingBack = !empty($kyc->document_back);
+        $hasExistingBack = $kyc->document_back
+            && Storage::disk('public')->exists($kyc->document_back);
         $replaceBack = $request->hasFile('document_back');
 
         if (!$hasExistingBack && !$replaceBack) {

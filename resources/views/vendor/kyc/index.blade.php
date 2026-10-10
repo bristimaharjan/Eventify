@@ -103,12 +103,6 @@
                                 </svg>
                                 Create New Event
                             </a>
-                            <a href="{{ route('vendor.venues.create') }}" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gray-900 hover:bg-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600 text-white text-sm font-semibold shadow-md transition">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                                </svg>
-                                Add New Venue
-                            </a>
                         </div>
                     </div>
                 </div>
@@ -218,17 +212,34 @@
         {{-- FORM CARD (Show for not_submitted, rejected, or collapsible for updating) --}}
         <div id="kyc-form-card" class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200/80 dark:border-gray-700 p-6 sm:p-8" x-data="kycFormManager()">
             <div class="border-b border-gray-100 dark:border-gray-700 pb-5 mb-6">
-                <h2 class="text-xl font-bold text-gray-900 dark:text-white">
-                    @if($kyc && $kyc->isRejected())
-                        Resubmit KYC Documents
-                    @elseif($kyc && $kyc->isPending())
-                        Update Submitted Documents
-                    @elseif($kyc && $kyc->isApproved())
-                        Verified Details
-                    @else
-                        Submit KYC Documents
+                <div class="flex items-center justify-between gap-3">
+                    <h2 class="text-xl font-bold text-gray-900 dark:text-white">
+                        @if($kyc && $kyc->isRejected())
+                            Resubmit KYC Documents
+                        @elseif($kyc && $kyc->isPending())
+                            Update Submitted Documents
+                        @elseif($kyc && $kyc->isApproved())
+                            Verified Details
+                        @else
+                            Submit KYC Documents
+                        @endif
+                    </h2>
+
+                    @if($kyc && $kyc->isApproved())
+                        <button type="button"
+                                x-show="!isEditing"
+                                @click="isEditing = true"
+                                class="inline-flex items-center gap-2 rounded-xl border border-[#8d85ec] bg-[#8d85ec]/10 px-4 py-2 text-xs font-semibold text-[#8d85ec] hover:bg-[#8d85ec]/15 transition">
+                            Edit Verification Details
+                        </button>
+                        <button type="button"
+                                x-show="isEditing"
+                                @click="isEditing = false"
+                                class="inline-flex items-center gap-2 rounded-xl border border-gray-300 bg-white px-4 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition">
+                            Cancel Edit
+                        </button>
                     @endif
-                </h2>
+                </div>
                 <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">
                     Please provide accurate legal business information and clear scans or photos of your identification documents.
                 </p>
@@ -245,8 +256,9 @@
                 </div>
             @endif
 
-            <form action="{{ route('vendor.kyc.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
-                @csrf
+            <div x-show="!approvedLocked || isEditing">
+                <form action="{{ route('vendor.kyc.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+                    @csrf
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <!-- Business / Organization Name -->
@@ -334,8 +346,11 @@
                                             <span class="text-xs text-gray-600 dark:text-gray-300 mt-1 font-medium">Front Page (Uploaded)</span>
                                         </div>
                                     </template>
-                                    <template x-if="!existingFiles.front.is_pdf">
-                                        <img :src="existingFiles.front.url" class="h-24 mx-auto rounded-lg object-cover shadow-sm">
+                                    <template x-if="!existingFiles.front.is_pdf && !existingFiles.front.unavailable">
+                                        <img :src="existingFiles.front.url" x-on:error="existingFiles.front.unavailable = true" class="h-24 mx-auto rounded-lg object-cover shadow-sm">
+                                    </template>
+                                    <template x-if="existingFiles.front.unavailable">
+                                        <p class="text-xs text-amber-700 dark:text-amber-300">Preview unavailable. Please upload this document again.</p>
                                     </template>
                                     <span class="text-[11px] text-[#8d85ec] font-semibold block mt-1">Click to replace</span>
                                 </div>
@@ -391,8 +406,11 @@
                                             <span class="text-xs text-gray-600 dark:text-gray-300 mt-1 font-medium">Back Page (Uploaded)</span>
                                         </div>
                                     </template>
-                                    <template x-if="!existingFiles.back.is_pdf">
-                                        <img :src="existingFiles.back.url" class="h-24 mx-auto rounded-lg object-cover shadow-sm">
+                                    <template x-if="!existingFiles.back.is_pdf && !existingFiles.back.unavailable">
+                                        <img :src="existingFiles.back.url" x-on:error="existingFiles.back.unavailable = true" class="h-24 mx-auto rounded-lg object-cover shadow-sm">
+                                    </template>
+                                    <template x-if="existingFiles.back.unavailable">
+                                        <p class="text-xs text-amber-700 dark:text-amber-300">Preview unavailable. Please upload this document again.</p>
                                     </template>
                                     <span class="text-[11px] text-[#8d85ec] font-semibold block mt-1">Click to replace</span>
                                 </div>
@@ -447,8 +465,11 @@
                                             <span class="text-xs text-gray-600 dark:text-gray-300 mt-1 font-medium">Registration Doc (Uploaded)</span>
                                         </div>
                                     </template>
-                                    <template x-if="!existingFiles.company.is_pdf">
-                                        <img :src="existingFiles.company.url" class="h-24 mx-auto rounded-lg object-cover shadow-sm">
+                                    <template x-if="!existingFiles.company.is_pdf && !existingFiles.company.unavailable">
+                                        <img :src="existingFiles.company.url" x-on:error="existingFiles.company.unavailable = true" class="h-24 mx-auto rounded-lg object-cover shadow-sm">
+                                    </template>
+                                    <template x-if="existingFiles.company.unavailable">
+                                        <p class="text-xs text-amber-700 dark:text-amber-300">Preview unavailable. Please upload this document again.</p>
                                     </template>
                                     <span class="text-[11px] text-[#8d85ec] font-semibold block mt-1">Click to replace</span>
                                 </div>
@@ -488,18 +509,28 @@
                     </div>
                 </div>
 
-                <!-- Submit Button -->
-                <div class="flex justify-end pt-2">
-                    <button type="submit" 
-                            class="px-8 py-3 rounded-xl bg-[#8d85ec] hover:bg-[#7b76e4] text-white font-bold text-sm shadow-md hover:shadow-lg transition transform active:scale-98">
-                        @if($kyc && ($kyc->isRejected() || $kyc->isPending()))
-                            Resubmit Verification Documents
-                        @else
-                            Submit KYC for Verification
-                        @endif
-                    </button>
-                </div>
-            </form>
+                    <!-- Submit Button -->
+                    @if($kyc && $kyc->isApproved())
+                        <div class="flex justify-end pt-2" x-show="isEditing">
+                            <button type="submit"
+                                    class="px-8 py-3 rounded-xl bg-[#8d85ec] hover:bg-[#7b76e4] text-white font-bold text-sm shadow-md hover:shadow-lg transition transform active:scale-98">
+                                Save Changes &amp; Submit for Review
+                            </button>
+                        </div>
+                    @else
+                        <div class="flex justify-end pt-2">
+                            <button type="submit"
+                                    class="px-8 py-3 rounded-xl bg-[#8d85ec] hover:bg-[#7b76e4] text-white font-bold text-sm shadow-md hover:shadow-lg transition transform active:scale-98">
+                                @if($kyc && ($kyc->isRejected() || $kyc->isPending()))
+                                    Resubmit Verification Documents
+                                @else
+                                    Submit KYC for Verification
+                                @endif
+                            </button>
+                        </div>
+                    @endif
+                </form>
+            </div>
         </div>
 
     </div>
@@ -508,6 +539,8 @@
 <script>
 function kycFormManager() {
     return {
+        approvedLocked: @json($kyc && $kyc->isApproved()),
+        isEditing: false,
         previews: {
             front: null,
             back: null,

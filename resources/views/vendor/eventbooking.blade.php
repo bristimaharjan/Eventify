@@ -30,7 +30,7 @@ $noFooter = true;
                         <th class="px-6 py-4">Booking ID</th>
                         <th class="px-6 py-4">Customer</th>
                         <th class="px-6 py-4">Event</th>
-                        <th class="px-6 py-4">Ticket Type</th>
+                        <th class="px-6 py-4 text-center">Ticket Type</th>
                         <th class="px-6 py-4 text-center">Qty</th>
                         <th class="px-6 py-4">Price / Ticket</th>
                         <th class="px-6 py-4">Total Amount</th>
@@ -54,8 +54,8 @@ $noFooter = true;
                         <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
                             {{ $booking->event->event_name ?? 'Event #' . $booking->event_id }}
                         </td>
-                        <td class="px-6 py-4">
-                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-300">
+                        <td class="px-6 py-4 text-center">
+                            <span class="inline-flex max-w-full items-center justify-center break-words text-center px-2.5 py-1 rounded-full text-xs font-bold bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-300">
                                 {{ $ticketName }}
                             </span>
                         </td>

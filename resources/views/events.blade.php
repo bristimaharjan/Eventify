@@ -240,7 +240,7 @@
         <a href="{{ route('events', array_merge(request()->except(['tab', 'saved']), ['tab' => 'saved'])) }}"
            class="px-3.5 py-2 rounded-full text-[10px] sm:text-[11px] font-bold whitespace-nowrap transition flex items-center gap-1.5 {{ $tab === 'saved' ? 'bg-[#8D85EC] text-white shadow-xs' : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700' }}">
           <iconify-icon icon="solar:heart-bold" class="text-rose-500 text-xs"></iconify-icon>
-          <span>Saved ({{ count($savedEventIds ?? []) }})</span>
+          <span>Saved (<span class="saved-count-badge">{{ count($savedEventIds ?? []) }}</span>)</span>
         </a>
       </div>
     </div>
@@ -265,6 +265,10 @@
             $maxPrice = $activeTickets->isNotEmpty() ? $activeTickets->max('price') : $event->price;
             $totalRemaining = $activeTickets->isNotEmpty() ? $activeTickets->sum(fn($t) => max(0, $t->quantity - $t->sold_quantity)) : $event->available_seats;
             $isSaved = in_array($event->id, $savedEventIds ?? []);
+            $eventImage = $event->image ? basename(str_replace('\\', '/', $event->image)) : null;
+            $eventImageUrl = $eventImage && is_file(public_path('uploads/' . $eventImage))
+                ? asset('uploads/' . $eventImage)
+                : asset('uploads/concert.jpg');
           @endphp
 
           <!-- Event Card -->
@@ -273,7 +277,7 @@
               <div>
                   <!-- Card Image Container -->
                   <div class="w-full h-40 overflow-hidden rounded-t-2xl relative bg-gray-100 dark:bg-gray-900">
-                      <img src="{{ $event->image ? asset('uploads/' . $event->image) : asset('uploads/concert.jpg') }}" alt="{{ $event->event_name }}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                      <img src="{{ $eventImageUrl }}" alt="{{ $event->event_name }}" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" onerror="this.onerror=null; this.src='{{ asset('uploads/concert.jpg') }}';" />
                       
                       <!-- Category Badge (Top-Left) -->
                       @if($event->category)
