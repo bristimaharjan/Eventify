@@ -9,11 +9,11 @@
 @section('content')
 @include('admin.sidebar')
 
-<div class="ml-0 sm:ml-64 p-4 sm:p-8 min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
-    <div class="max-w-7xl mx-auto space-y-8">
+<div class="ml-0 min-w-0 p-4 sm:ml-64 sm:p-8 min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+    <div class="mx-auto max-w-7xl space-y-8">
 
         <!-- Top Header & Welcome -->
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white dark:bg-gray-800 p-6 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm">
+        <div class="flex min-w-0 flex-col gap-4 rounded-2xl border border-gray-100 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:flex-row sm:items-center sm:justify-between sm:p-6">
             <div>
                 <div class="flex items-center gap-2">
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#8D85EC]/15 text-[#8D85EC] dark:bg-[#8D85EC]/30">
@@ -29,14 +29,14 @@
                 </p>
             </div>
             
-            <div class="flex items-center gap-3">
-                <a href="{{ route('admin.events.index') }}" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#8D85EC] hover:bg-[#7b76e4] text-white text-xs sm:text-sm font-semibold transition shadow-sm">
+            <div class="flex w-full flex-wrap items-center gap-2 sm:w-auto sm:gap-3">
+                <a href="{{ route('admin.events.index') }}" class="inline-flex min-w-0 flex-1 items-center justify-center gap-2 rounded-xl bg-[#8D85EC] px-3 py-2.5 text-center text-xs font-semibold text-white shadow-sm transition hover:bg-[#7b76e4] sm:flex-none sm:px-4 sm:text-sm">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>
                     Manage Events
                 </a>
-                <a href="{{ route('admin.kyc.index') }}" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 text-xs sm:text-sm font-semibold transition shadow-xs">
+                <a href="{{ route('admin.kyc.index') }}" class="inline-flex min-w-0 flex-1 items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-center text-xs font-semibold text-gray-700 shadow-xs transition hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 sm:flex-none sm:px-4 sm:text-sm">
                     <svg class="w-4 h-4 text-[#8D85EC]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                     </svg>
@@ -51,7 +51,7 @@
         </div>
 
         <!-- 1. Top Statistics Summary Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+        <div class="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
             
             <!-- Total Users -->
             <div class="bg-white dark:bg-gray-800 p-5 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-xs hover:border-[#8D85EC]/50 transition">
@@ -161,10 +161,10 @@
         </div>
 
         <!-- 2. Charts Section: Booking & Revenue Activity + Category Distribution -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="grid min-w-0 grid-cols-1 gap-6 lg:grid-cols-3">
             
             <!-- Booking & Revenue Activity (2 Cols) -->
-            <div class="lg:col-span-2 bg-white dark:bg-gray-800 p-6 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm">
+            <div class="min-w-0 rounded-2xl border border-gray-100 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6 lg:col-span-2">
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                     <div>
                         <h2 class="text-lg font-bold text-gray-900 dark:text-white">Booking & Revenue Activity</h2>
@@ -183,7 +183,7 @@
                 </div>
 
                 <!-- Canvas -->
-                <div class="relative h-[280px] w-full">
+                <div class="relative h-[240px] w-full min-w-0 sm:h-[280px]">
                     <canvas id="bookingRevenueChart"></canvas>
                 </div>
 
@@ -203,7 +203,7 @@
             </div>
 
             <!-- Events by Category Distribution (1 Col) -->
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm flex flex-col justify-between">
+            <div class="flex min-w-0 flex-col justify-between rounded-2xl border border-gray-100 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6">
                 <div>
                     <div class="flex items-center justify-between mb-2">
                         <h2 class="text-lg font-bold text-gray-900 dark:text-white">Events by Category</h2>
@@ -257,10 +257,10 @@
         </div>
 
         <!-- 3. Middle Section: Recent Bookings + Vendor KYC Verification Overview -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="grid min-w-0 grid-cols-1 gap-6 lg:grid-cols-3">
             
             <!-- Recent Bookings Table (2 Cols) -->
-            <div class="lg:col-span-2 bg-white dark:bg-gray-800 p-6 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm">
+            <div class="min-w-0 rounded-2xl border border-gray-100 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6 lg:col-span-2">
                 <div class="flex items-center justify-between mb-4">
                     <div>
                         <h2 class="text-lg font-bold text-gray-900 dark:text-white">Recent Ticket Bookings</h2>
@@ -349,7 +349,7 @@
             </div>
 
             <!-- Vendor KYC Overview Card (1 Col) -->
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm flex flex-col justify-between">
+            <div class="flex min-w-0 flex-col justify-between rounded-2xl border border-gray-100 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6">
                 <div>
                     <div class="flex items-center justify-between mb-2">
                         <h2 class="text-lg font-bold text-gray-900 dark:text-white">Vendor Verification</h2>
@@ -360,7 +360,7 @@
                     <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">Status of organizer identity and business KYC submissions</p>
 
                     <!-- KYC Status Counters -->
-                    <div class="grid grid-cols-3 gap-2 mb-4">
+                    <div class="grid min-w-0 grid-cols-3 gap-2 mb-4">
                         <div class="p-3 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200/60 dark:border-amber-800/40 text-center">
                             <span class="block text-xs font-semibold text-amber-800 dark:text-amber-300">Pending</span>
                             <span class="text-xl font-black text-amber-600 dark:text-amber-400">{{ $pendingKyc }}</span>
@@ -417,10 +417,10 @@
         </div>
 
         <!-- 4. Section: Recently Added Events + Upcoming Events Showcase -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="grid min-w-0 grid-cols-1 gap-6 lg:grid-cols-3">
             
             <!-- Recently Added Events (2 Cols) -->
-            <div class="lg:col-span-2 bg-white dark:bg-gray-800 p-6 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm">
+            <div class="min-w-0 rounded-2xl border border-gray-100 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6 lg:col-span-2">
                 <div class="flex items-center justify-between mb-4">
                     <div>
                         <h2 class="text-lg font-bold text-gray-900 dark:text-white">Recently Added Events</h2>
@@ -501,7 +501,7 @@
             </div>
 
             <!-- Upcoming Events Highlights (1 Col) -->
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm flex flex-col justify-between">
+            <div class="flex min-w-0 flex-col justify-between rounded-2xl border border-gray-100 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6">
                 <div>
                     <div class="flex items-center justify-between mb-2">
                         <h2 class="text-lg font-bold text-gray-900 dark:text-white">Upcoming Events</h2>
@@ -552,10 +552,10 @@
         </div>
 
         <!-- 5. Bottom Section: Recent Activity Log + Contact & Inquiry Overview -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="grid min-w-0 grid-cols-1 gap-6 lg:grid-cols-2">
             
             <!-- Recent Activity Log -->
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm flex flex-col justify-between">
+            <div class="flex min-w-0 flex-col justify-between rounded-2xl border border-gray-100 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6">
                 <div>
                     <div class="flex items-center justify-between mb-2">
                         <div class="flex items-center gap-2">
@@ -617,7 +617,7 @@
             </div>
 
             <!-- Contact & Inquiry Overview -->
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm flex flex-col justify-between">
+            <div class="flex min-w-0 flex-col justify-between rounded-2xl border border-gray-100 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6">
                 <div>
                     <div class="flex items-center justify-between mb-2">
                         <h2 class="text-lg font-bold text-gray-900 dark:text-white">Contact & Support Inquiries</h2>

@@ -144,7 +144,6 @@ class User extends Authenticatable
             if (file_exists(public_path($this->profile_photo))) {
                 return asset($this->profile_photo);
             }
-            return asset('uploads/profile_photos/' . $this->profile_photo);
         }
 
         if (!empty($this->profile_image)) {

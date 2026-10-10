@@ -30,8 +30,8 @@ $noFooter = true;
                             <td class="px-6 py-4 font-medium text-gray-700">{{ $user->id }}</td>
                             <td class="px-6 py-4">{{ $user->name }}</td>
                             <td class="px-6 py-4">{{ $user->email }}</td>
-                            <td class="px-6 py-4">
-                                <span class="px-3 py-1 text-xs font-semibold rounded-full
+                            <td class="whitespace-nowrap px-6 py-4">
+                                <span class="whitespace-nowrap px-3 py-1 text-xs font-semibold rounded-full
                                     @if($user->role === 'Admin') bg-purple-100 text-purple-700 
                                     @elseif($user->role === 'Vendor') bg-green-100 text-green-700
                                     @else bg-gray-100 text-gray-700 @endif">

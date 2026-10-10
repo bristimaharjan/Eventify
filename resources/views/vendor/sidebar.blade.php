@@ -188,8 +188,10 @@
 /* ─── Nav list ──────────────────────────────────────────────── */
 #ev-vendor-sidebar .ev-nav {
     flex: 1;
+    min-height: 0;
     padding: 0 10px;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 2px;
@@ -336,6 +338,33 @@
 #ev-vendor-overlay.ev-show { display: block; }
 </style>
 
+<div class="sticky top-0 z-50 flex items-center justify-between border-b border-gray-200 bg-white/95 px-4 py-3 shadow-sm backdrop-blur dark:border-gray-700 dark:bg-gray-900/95 sm:px-6 md:hidden">
+    <button
+        type="button"
+        id="ev-vendor-mobile-toggle"
+        class="inline-flex min-h-11 items-center gap-2 rounded-lg px-3 font-semibold text-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#8D85EC] dark:text-white dark:hover:bg-gray-800 md:hidden"
+        aria-label="Open vendor navigation"
+        aria-expanded="false"
+        aria-controls="ev-vendor-sidebar"
+    >
+        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+        Menu
+    </button>
+    <span class="text-sm font-bold text-gray-900 dark:text-white">Organizer Hub</span>
+    @if (!request()->routeIs('vendor.dashboard'))
+    <button id="theme-toggle" class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-[#8D85EC]" aria-label="Toggle theme">
+        <svg id="icon-moon" class="h-5 w-5 text-gray-800 dark:text-gray-200" fill="currentColor" viewBox="0 0 20 20" style="display: none;" aria-hidden="true">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
+        </svg>
+        <svg id="icon-sun" class="h-5 w-5 text-gray-800 dark:text-gray-200" fill="currentColor" viewBox="0 0 20 20" style="display: none;" aria-hidden="true">
+            <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1z"/>
+        </svg>
+    </button>
+    @endif
+</div>
+
 {{-- ══════════════ SIDEBAR MARKUP ══════════════ --}}
 <aside id="ev-vendor-sidebar" aria-label="Vendor Navigation">
 
@@ -356,7 +385,9 @@
     <a href="{{ route('profile.show') }}" class="ev-profile">
         <div class="ev-avatar-wrap">
             @if(Auth::user()->profile_photo_url)
-                <img src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}">
+                <img src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}"
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                <div class="ev-avatar-init" style="display:none;">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</div>
             @else
                 <div class="ev-avatar-init">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</div>
             @endif
@@ -503,8 +534,20 @@
             if (isMobile()) overlay.classList.add('ev-show');
             else             overlay.classList.remove('ev-show');
         }
+        const mobileToggle = document.getElementById('ev-vendor-mobile-toggle');
+        if (mobileToggle) {
+            const expanded = isMobile() && !collapsed;
+            mobileToggle.setAttribute('aria-expanded', String(expanded));
+            mobileToggle.setAttribute('aria-label', expanded ? 'Close dashboard navigation' : 'Open dashboard navigation');
+        }
         syncMargin(collapsed);
         if (!animate) requestAnimationFrame(() => requestAnimationFrame(() => { sidebar.style.transition = ''; }));
+    }
+
+    function toggleSidebar() {
+        collapsed = !collapsed;
+        if (!isMobile()) setPref(collapsed);
+        applyState(collapsed, true);
     }
 
     function syncMargin(collapsed) {
@@ -522,11 +565,16 @@
 
     let collapsed = isMobile() ? true : getPref();
 
-    toggle.addEventListener('click', () => { collapsed = !collapsed; if (!isMobile()) setPref(collapsed); applyState(collapsed, true); });
+    toggle.addEventListener('click', toggleSidebar);
+    document.addEventListener('click', event => {
+        if (event.target instanceof Element && event.target.closest('#ev-vendor-mobile-toggle')) {
+            toggleSidebar();
+        }
+    });
     overlay.addEventListener('click', () => { collapsed = true; applyState(collapsed, true); });
     window.addEventListener('resize', () => { collapsed = isMobile() ? true : getPref(); applyState(collapsed, false); });
 
     applyState(collapsed, false);
-    window.__evVendorSidebar = { toggle: () => { collapsed = !collapsed; applyState(collapsed, true); } };
+    window.__evVendorSidebar = { toggle: toggleSidebar };
 })();
 </script>

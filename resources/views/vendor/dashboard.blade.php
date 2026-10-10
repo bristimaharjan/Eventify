@@ -11,7 +11,7 @@
 @section('content')
 @include('vendor.sidebar')
 
-<div class="ml-0 sm:ml-64 p-4 sm:p-8 min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+<div class="ml-0 min-w-0 p-4 sm:ml-64 sm:p-8 min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
     <div class="max-w-7xl mx-auto space-y-8">
 
         <!-- Top Header & Welcome -->
@@ -33,6 +33,14 @@
 
             <!-- Create Event Action Button with KYC Guard -->
             <div class="flex items-center gap-3">
+                <button id="theme-toggle" class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-[#8D85EC]" aria-label="Toggle theme">
+                    <svg id="icon-moon" class="h-5 w-5 text-gray-800 dark:text-gray-200" fill="currentColor" viewBox="0 0 20 20" style="display: none;" aria-hidden="true">
+                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
+                    </svg>
+                    <svg id="icon-sun" class="h-5 w-5 text-gray-800 dark:text-gray-200" fill="currentColor" viewBox="0 0 20 20" style="display: none;" aria-hidden="true">
+                        <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1z"/>
+                    </svg>
+                </button>
                 @if($isKycApproved)
                     <a href="{{ route('vendor.events.create') }}" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#8D85EC] hover:bg-[#7b76e4] text-white text-xs sm:text-sm font-bold transition shadow-sm hover:shadow">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

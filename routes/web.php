@@ -82,6 +82,8 @@ Route::middleware(['auth', 'verified', 'admin'])->group(function () {
     Route::get('/profile/bookings', [UserController::class, 'bookings'])->name('profile.bookings');
     Route::get('/admin/reports/booking', [VenueBookingController::class, 'showReport'])->name('admin.reports.adminbooking');
     Route::get('/admin/reports/admineventbooking', [UserController::class, 'showAllEvents'])->name('admin.reports.admineventbooking');
+    Route::get('/admin/reports/adminbooking/pdf', [VenueBookingController::class, 'downloadAdminBookingPdf'])->name('admin.reports.adminbooking.pdf');
+    Route::get('/admin/reports/admineventbooking/pdf', [UserController::class, 'downloadAdminPdf'])->name('admin.reports.admineventbooking.pdf');
     Route::get('/admin/activity-logs', [ActivityLogController::class, 'index'])->name('admin.activityLogs.index');
     Route::get('/admin/events', [AdminEventController::class, 'index'])->name('admin.events.index');
     Route::get('/admin/events/{event}', [AdminEventController::class, 'show'])->name('admin.events.show');
@@ -103,6 +105,8 @@ Route::middleware(['auth', 'verified', 'vendor'])->group(function () {
     Route::get('vendor/eventbooking', [VendorEventController::class, 'showEvents'])->name('vendor.eventbooking');
     Route::get('/vendor/reports/booking', [VenueBookingController::class, 'bookingReport'])->name('vendor.reports.booking');
     Route::get('/vendor/reports/eventbooking', [VendorEventController::class, 'EventbookingReport'])->name('vendor.reports.eventbooking');
+    Route::get('/vendor/reports/booking/pdf', [VenueBookingController::class, 'downloadBookingPdf'])->name('vendor.reports.booking.pdf');
+    Route::get('/vendor/reports/eventbooking/pdf', [VendorEventController::class, 'downloadPdf'])->name('vendor.reports.eventbooking.pdf');
     Route::get('/vendor/inquiries', [VendorInquiryController::class, 'index'])->name('vendor.inquiries.index');
     Route::get('/vendor/inquiries/{inquiry}', [VendorInquiryController::class, 'show'])->name('vendor.inquiries.show');
     Route::patch('/vendor/inquiries/{inquiry}/status', [VendorInquiryController::class, 'updateStatus'])->name('vendor.inquiries.updateStatus');
@@ -182,8 +186,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/venues/{id}/mark-as-paid', [VenueBookingController::class, 'markAsPaid'])->name('venue_bookings.markAsPaid');
 });
 
-Route::get('/vendor/reports/booking/pdf', [VenueBookingController::class, 'downloadBookingPdf'])->name('vendor.reports.booking.pdf');
-Route::get('/admin/reports/adminbooking/pdf', [VenueBookingController::class, 'downloadAdminBookingPdf'])->name('admin.reports.adminbooking.pdf');
 Route::post('/khalti/save-booking', [App\Http\Controllers\KhaltiController::class, 'saveBooking'])->name('khalti.saveBooking');
 Route::delete('/venue-bookings/{id}/cancel', [VenueBookingController::class, 'cancel'])->name('venueBooking.cancel');
 
@@ -191,9 +193,6 @@ Route::post('/chatbot/message', [App\Http\Controllers\ChatbotController::class, 
     ->name('chatbot.message');
 Route::post('/chatbot/clear', [App\Http\Controllers\ChatbotController::class, 'clearHistory'])
     ->name('chatbot.clear');
-
-Route::get('/vendor/reports/eventbooking/pdf', [VendorEventController::class, 'downloadPdf'])->name('vendor.reports.eventbooking.pdf');
-Route::get('/admin/reports/admineventbooking/pdf', [UserController::class, 'downloadAdminPdf'])->name('admin.reports.admineventbooking.pdf');
 
 Route::post('/venue-review', [ReviewController::class, 'store'])->name('venueReview.store');
 Route::get('/admin/reviews', [ReviewController::class, 'index'])
@@ -207,5 +206,5 @@ Route::get('/venues/{venue}/reviews', [ReviewController::class, 'getVenueReviews
 
 // Fallback route - MUST be at the end
 Route::fallback(function () {
-    return view('errors.404');
+    return response()->view('errors.404', [], 404);
 });

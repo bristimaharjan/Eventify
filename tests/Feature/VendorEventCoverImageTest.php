@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use App\Models\VendorKyc;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -15,6 +16,15 @@ class VendorEventCoverImageTest extends TestCase
     {
         $vendor = User::factory()->create([
             'role' => 'vendor',
+        ]);
+
+        VendorKyc::create([
+            'user_id' => $vendor->id,
+            'business_name' => 'Test Events Ltd.',
+            'document_type' => 'citizenship',
+            'document_front' => 'kyc/test-front.jpg',
+            'status' => 'approved',
+            'approved_at' => now(),
         ]);
 
         $this->actingAs($vendor)

@@ -46,8 +46,8 @@
                         <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
                             {{ $booking->event->event_name ?? 'Event #' . $booking->event_id }}
                         </td>
-                        <td class="px-6 py-4">
-                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-300">
+                        <td class="px-6 py-4 text-center align-middle">
+                            <span class="inline-flex items-center justify-center whitespace-nowrap rounded-full bg-purple-100 px-2.5 py-1 text-center text-xs font-bold text-purple-800 dark:bg-purple-900/50 dark:text-purple-300">
                                 {{ $ticketName }}
                             </span>
                         </td>

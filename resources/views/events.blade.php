@@ -599,13 +599,13 @@
                                     <div class="mt-4 space-y-3">
                                         <div>
                                             <label class="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">Khalti Mobile Number</label>
-                                            <input type="text" x-model="phone" placeholder="9800000000"
+                                            <input type="text" x-model="phone" 
                                                 class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-1.5 text-xs focus:ring-1 focus:ring-[#8D85EC] dark:bg-gray-800 dark:text-white outline-none">
                                         </div>
 
                                         <div>
-                                            <label class="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">Khalti MPIN (1111)</label>
-                                            <input type="password" x-model="mpin" placeholder="1111"
+                                            <label class="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">Khalti MPIN</label>
+                                            <input type="password" x-model="mpin"
                                                 class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-1.5 text-xs focus:ring-1 focus:ring-[#8D85EC] dark:bg-gray-800 dark:text-white outline-none">
                                         </div>
                                         <p class="text-rose-500 text-xs font-semibold" x-text="paymentError"></p>

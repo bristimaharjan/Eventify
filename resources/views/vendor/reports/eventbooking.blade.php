@@ -53,7 +53,7 @@ $noFooter = true;
                         <th class="px-6 py-4">Booking ID</th>
                         <th class="px-6 py-4">Customer</th>
                         <th class="px-6 py-4">Event</th>
-                        <th class="px-6 py-4">Ticket Type</th>
+                        <th class="px-6 py-4 text-center">Ticket Type</th>
                         <th class="px-6 py-4 text-center">Tickets</th>
                         <th class="px-6 py-4">Price / Ticket</th>
                         <th class="px-6 py-4">Amount (Rs)</th>
@@ -71,8 +71,8 @@ $noFooter = true;
                         <td class="px-6 py-4 font-mono font-bold text-xs text-gray-500 dark:text-gray-400">#{{ $booking->id }}</td>
                         <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">{{ $booking->user->name ?? 'Guest User' }}</td>
                         <td class="px-6 py-4">{{ $booking->event->event_name ?? 'Event #' . $booking->event_id }}</td>
-                        <td class="px-6 py-4">
-                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-300">
+                        <td class="px-6 py-4 text-center">
+                            <span class="inline-flex items-center whitespace-nowrap px-2 py-0.5 rounded-full text-xs font-semibold bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-300">
                                 {{ $ticketName }}
                             </span>
                         </td>
@@ -90,11 +90,9 @@ $noFooter = true;
                 <!-- Footer row for totals -->
                 <tfoot class="bg-gray-50 dark:bg-gray-700/80 font-bold">
                     <tr>
-                        <td colspan="4" class="px-6 py-4 text-right">Total Summary:</td>
-                        <td class="px-6 py-4 text-center text-[#8d85ec]">{{ $eventBookings->sum('tickets') }} tickets</td>
-                        <td class="px-6 py-4"></td>
-                        <td class="px-6 py-4 text-green-600 dark:text-green-400 text-base">Rs {{ number_format($eventBookings->sum(fn($b) => $b->total_amount ?? $b->amount), 2) }}</td>
-                        <td></td>
+                        <td colspan="4" class="whitespace-nowrap px-6 py-4 text-right">Total Summary:</td>
+                        <td colspan="2" class="whitespace-nowrap px-6 py-4 text-center text-[#8d85ec]">{{ $eventBookings->sum('tickets') }} tickets</td>
+                        <td colspan="2" class="whitespace-nowrap px-6 py-4 text-right text-base text-green-600 dark:text-green-400">Rs {{ number_format($eventBookings->sum(fn($b) => $b->total_amount ?? $b->amount), 2) }}</td>
                     </tr>
                 </tfoot>
             </table>

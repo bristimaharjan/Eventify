@@ -91,7 +91,11 @@
                         @if(Auth::user()->profile_photo_url)
                             <img src="{{ Auth::user()->profile_photo_url }}"
                                 alt="{{ Auth::user()->name }}"
-                                class="h-12 w-12 rounded-full object-cover border-2 border-white shadow-xs">
+                                class="h-12 w-12 rounded-full object-cover border-2 border-white shadow-xs"
+                                onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                            <div class="h-12 w-12 rounded-full bg-white text-[#8D85EC] font-bold items-center justify-center text-xs shadow-xs border-2 border-white" style="display: none;">
+                                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                            </div>
                         @else
                             <div class="h-12 w-12 rounded-full bg-white text-[#8D85EC] font-bold flex items-center justify-center text-xs shadow-xs border-2 border-white">
                                 {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
@@ -338,6 +342,8 @@
             const sunIcon = document.getElementById('icon-sun');
 
             function updateIcons() {
+                if (!moonIcon || !sunIcon) return;
+
                 if (document.documentElement.classList.contains('dark')) {
                     moonIcon.style.display = 'none';
                     sunIcon.style.display = 'block';
@@ -347,11 +353,8 @@
                 }
             }
 
-            // Initialize theme based on localStorage or prefers-color-scheme
-            if (
-                localStorage.getItem('color-theme') === 'dark' ||
-                (!localStorage.getItem('color-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)
-            ) {
+            // Respect an explicit saved choice; use light mode for first-time visitors.
+            if (localStorage.getItem('color-theme') === 'dark') {
                 document.documentElement.classList.add('dark');
             } else {
                 document.documentElement.classList.remove('dark');
@@ -359,7 +362,7 @@
             updateIcons();
 
             // Toggle theme on button click
-            toggleBtn.addEventListener('click', () => {
+            if (toggleBtn) toggleBtn.addEventListener('click', () => {
                 if (document.documentElement.classList.contains('dark')) {
                     document.documentElement.classList.remove('dark');
                     localStorage.setItem('color-theme', 'light');

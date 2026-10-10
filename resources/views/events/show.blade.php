@@ -795,13 +795,13 @@
                     <div class="mt-4 space-y-3">
                         <div>
                             <label class="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">Khalti Mobile Number</label>
-                            <input type="text" x-model="phone" placeholder="e.g. 9800000000"
+                            <input type="text" x-model="phone"
                                    class="w-full border border-gray-300 dark:border-gray-600 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-[#8D85EC] dark:bg-gray-800 dark:text-white outline-none">
                         </div>
 
                         <div>
                             <label class="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">Khalti MPIN</label>
-                            <input type="password" x-model="mpin" placeholder="MPIN (1111)"
+                            <input type="password" x-model="mpin"
                                    class="w-full border border-gray-300 dark:border-gray-600 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-[#8D85EC] dark:bg-gray-800 dark:text-white outline-none">
                         </div>
                         <p class="text-red-500 text-xs font-semibold" x-text="paymentError"></p>

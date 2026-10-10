@@ -39,12 +39,14 @@
             font-weight: bold;
         }
         .badge {
+            display: inline-block;
             background-color: #e9e5fc;
             color: #5c4eb5;
             padding: 2px 6px;
             border-radius: 4px;
             font-size: 10px;
             font-weight: bold;
+            white-space: nowrap;
         }
     </style>
 </head>
@@ -58,7 +60,7 @@
                 <th>Booking ID</th>
                 <th>Customer</th>
                 <th>Event</th>
-                <th>Ticket Type</th>
+                <th style="text-align: center;">Ticket Type</th>
                 <th style="text-align: center;">Tickets</th>
                 <th>Price / Ticket</th>
                 <th>Amount (Rs)</th>
@@ -76,7 +78,7 @@
                 <td>#{{ $booking->id }}</td>
                 <td>{{ $booking->user->name ?? 'Guest User' }}</td>
                 <td>{{ $booking->event->event_name ?? 'Event #' . $booking->event_id }}</td>
-                <td><span class="badge">{{ $ticketName }}</span></td>
+                <td style="text-align: center;"><span class="badge">{{ $ticketName }}</span></td>
                 <td style="text-align: center;">{{ $booking->tickets }}</td>
                 <td>Rs {{ number_format($unitPrice, 2) }}</td>
                 <td class="total-amount">Rs {{ number_format($total, 2) }}</td>
@@ -90,11 +92,9 @@
         </tbody>
         <tfoot>
             <tr class="total-row">
-                <td colspan="4" style="text-align: right; padding: 10px;">Total Summary:</td>
-                <td style="text-align: center; color: #6a4c93;">{{ $eventBookings->sum('tickets') }}</td>
-                <td></td>
-                <td class="total-amount" style="font-size: 13px;">Rs {{ number_format($eventBookings->sum(fn($b) => $b->total_amount ?? $b->amount), 2) }}</td>
-                <td></td>
+                <td colspan="4" style="text-align: right; padding: 10px; white-space: nowrap;">Total Summary:</td>
+                <td colspan="2" style="text-align: center; color: #6a4c93; white-space: nowrap;">{{ $eventBookings->sum('tickets') }} tickets</td>
+                <td colspan="2" class="total-amount" style="font-size: 13px; white-space: nowrap;">Rs {{ number_format($eventBookings->sum(fn($b) => $b->total_amount ?? $b->amount), 2) }}</td>
             </tr>
         </tfoot>
     </table>

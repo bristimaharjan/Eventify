@@ -67,7 +67,11 @@
                                 <img id="photoPreview" 
                                      src="{{ $user->profile_photo_url }}" 
                                      alt="{{ $user->name }}" 
-                                     class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                                     class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                                <div class="hidden w-full h-full bg-gradient-to-br from-[#6961e2] to-[#8D85EC] text-white items-center justify-center font-bold text-4xl shadow-inner">
+                                    {{ strtoupper(substr($user->name, 0, 1)) }}
+                                </div>
                             @else
                                 <div id="photoPreview" class="w-full h-full bg-gradient-to-br from-[#6961e2] to-[#8D85EC] text-white flex items-center justify-center font-bold text-4xl shadow-inner">
                                     {{ strtoupper(substr($user->name, 0, 1)) }}
