@@ -34,6 +34,12 @@ class VendorEventCoverImageTest extends TestCase
             ->assertSee('Recommended format: JPG, JPEG, or PNG')
             ->assertSee('Adjust Event Cover')
             ->assertSee('Use Image')
+            ->assertSee('Create a new category...')
+            ->assertSee('id="category-modal"', false)
+            ->assertSee('Create a category')
+            ->assertSee('id="new-category-name"', false)
+            ->assertSee('Add Category')
+            ->assertDontSee('id="new-category-field"', false)
             ->assertSee('For best results, upload a landscape image suitable for the event card.');
     }
 }

@@ -45,16 +45,29 @@ class VendorEventController extends Controller
     // Show form to create a new event
     public function create()
     {
-        return view('vendor.events.create');
+        $categories = Event::whereNotNull('category')
+            ->where('category', '!=', '')
+            ->distinct()
+            ->orderBy('category')
+            ->pluck('category');
+
+        return view('vendor.events.create', compact('categories'));
     }
 
     // Store a new event
     public function store(Request $request)
     {
+        if ($request->input('category') === '__new__') {
+            $customCategory = $request->input('custom_category');
+            $request->merge([
+                'category' => is_string($customCategory) ? trim($customCategory) : $customCategory,
+            ]);
+        }
+
         $request->validate([
             'event_name' => 'required|string|max:255',
             'event_date' => 'required|date',
-            'category' => 'nullable|string|max:255',
+            'category' => 'required|string|max:255',
             'venue' => 'required|string|max:255',
             'description' => [
                 'required',

@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+        if (localStorage.getItem('color-theme') === 'dark') {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
     <title>@hasSection('title')@yield('title') - {{ config('app.name', 'Eventify') }}@else{{ config('app.name', 'Eventify') }}@endif</title>
     <link rel="icon" type="image/png" href="{{ asset('images/eventify-logo.png') }}">
     <link rel="shortcut icon" type="image/png" href="{{ asset('images/eventify-logo.png') }}">
@@ -104,7 +109,7 @@
                     </button>
 
                     <!-- Dropdown -->
-                    <div x-show="open" @click.away="open = false" 
+                    <div x-show="open" x-cloak @click.away="open = false"
                         class="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-2xl shadow-xl py-2 z-50 border border-gray-100 dark:border-gray-700"
                         x-transition:enter="transition ease-out duration-200"
                         x-transition:enter-start="opacity-0 transform scale-95"
@@ -353,12 +358,6 @@
                 }
             }
 
-            // Respect an explicit saved choice; use light mode for first-time visitors.
-            if (localStorage.getItem('color-theme') === 'dark') {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
             updateIcons();
 
             // Toggle theme on button click

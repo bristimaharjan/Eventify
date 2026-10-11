@@ -45,14 +45,32 @@
                 </div>
                 <div>
                     <label class="block mb-2 font-semibold text-gray-700 dark:text-gray-200">Category <span class="text-red-500">*</span></label>
-                    <select name="category" class="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 focus:ring-2 focus:ring-[#8d85ec] focus:outline-none" required>
-                        <option value="" disabled {{ old('category') ? '' : 'selected' }}>Select Category</option>
+                    @php
+                        $standardCategories = ['Concert', 'Art', 'Exhibition', 'Food & Drink', 'Technology', 'Sports', 'Wellness', 'Workshop'];
+                        $oldCategory = old('category');
+                        $knownCategories = array_merge($standardCategories, $categories->all());
+                        $restoredCategory = $oldCategory && $oldCategory !== '__new__'
+                            && !in_array($oldCategory, $knownCategories, true)
+                                ? $oldCategory
+                                : null;
+                    @endphp
+                    <select id="event-category" name="category" class="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 focus:ring-2 focus:ring-[#8d85ec] focus:outline-none" required>
+                        <option value="" disabled {{ !$oldCategory ? 'selected' : '' }}>Select Category</option>
                         <option value="Concert" {{ old('category') == 'Concert' ? 'selected' : '' }}>Concert</option>
                         <option value="Art" {{ old('category') == 'Art' ? 'selected' : '' }}>Exhibition / Art</option>
                         <option value="Food & Drink" {{ old('category') == 'Food & Drink' ? 'selected' : '' }}>Food & Drink</option>
                         <option value="Technology" {{ old('category') == 'Technology' ? 'selected' : '' }}>Technology</option>
                         <option value="Sports" {{ old('category') == 'Sports' ? 'selected' : '' }}>Sports</option>
                         <option value="Wellness" {{ old('category') == 'Wellness' ? 'selected' : '' }}>Workshop / Wellness</option>
+                        @foreach($categories as $existingCategory)
+                            @unless(in_array($existingCategory, $standardCategories, true))
+                                <option value="{{ $existingCategory }}" {{ old('category') === $existingCategory ? 'selected' : '' }}>{{ $existingCategory }}</option>
+                            @endunless
+                        @endforeach
+                        @if($restoredCategory)
+                            <option value="{{ $restoredCategory }}" selected>{{ $restoredCategory }}</option>
+                        @endif
+                        <option value="__new__" {{ $oldCategory === '__new__' ? 'selected' : '' }}>Create a new category...</option>
                     </select>
                 </div>
             </div>
@@ -208,6 +226,29 @@
     </div>
 </div>
 
+<div id="category-modal" class="fixed inset-0 z-[60] hidden items-center justify-center bg-gray-950/60 p-4" role="dialog" aria-modal="true" aria-labelledby="category-modal-title">
+    <div class="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl dark:bg-gray-800">
+        <div class="flex items-start justify-between gap-4">
+            <div>
+                <h2 id="category-modal-title" class="text-xl font-bold text-gray-900 dark:text-white">Create a category</h2>
+                <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">Add a category to use for this event.</p>
+            </div>
+            <button type="button" id="category-modal-close" class="rounded-full p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700" aria-label="Close category dialog">
+                <iconify-icon icon="solar:close-circle-bold" class="text-2xl"></iconify-icon>
+            </button>
+        </div>
+        <div class="mt-5">
+            <label for="new-category-name" class="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-200">Category name</label>
+            <input id="new-category-name" type="text" maxlength="255" value="{{ old('custom_category', $restoredCategory) }}" placeholder="e.g. Stand up" class="w-full rounded-lg border border-gray-300 p-3 text-gray-900 focus:border-[#8d85ec] focus:outline-none focus:ring-2 focus:ring-[#8d85ec] dark:border-gray-600 dark:bg-gray-700 dark:text-white">
+            <p id="category-modal-error" class="mt-2 hidden text-sm text-red-600 dark:text-red-400" role="alert"></p>
+        </div>
+        <div class="mt-6 flex justify-end gap-3">
+            <button type="button" id="category-modal-cancel" class="rounded-lg border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700">Cancel</button>
+            <button type="button" id="category-modal-save" class="rounded-lg bg-[#8d85ec] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#7b76e4]">Add Category</button>
+        </div>
+    </div>
+</div>
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css" />
 
 <div id="crop-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 px-4 py-6">
@@ -246,6 +287,102 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        const categorySelect = document.getElementById('event-category');
+        const categoryModal = document.getElementById('category-modal');
+        const categoryNameInput = document.getElementById('new-category-name');
+        const categoryModalError = document.getElementById('category-modal-error');
+        const categoryModalClose = document.getElementById('category-modal-close');
+        const categoryModalCancel = document.getElementById('category-modal-cancel');
+        const categoryModalSave = document.getElementById('category-modal-save');
+        let previousCategory = categorySelect.value === '__new__' ? '' : categorySelect.value;
+
+        function closeCategoryModal() {
+            categoryModal.classList.add('hidden');
+            categoryModal.classList.remove('flex');
+            categoryModalError.textContent = '';
+            categoryModalError.classList.add('hidden');
+            categorySelect.value = previousCategory;
+        }
+
+        function openCategoryModal(clearInput = true) {
+            if (clearInput) {
+                categoryNameInput.value = '';
+            }
+            categoryModalError.textContent = '';
+            categoryModalError.classList.add('hidden');
+            categoryModal.classList.remove('hidden');
+            categoryModal.classList.add('flex');
+            requestAnimationFrame(() => categoryNameInput.focus());
+        }
+
+        categorySelect.addEventListener('change', function () {
+            if (categorySelect.value === '__new__') {
+                openCategoryModal();
+                return;
+            }
+
+            previousCategory = categorySelect.value;
+        });
+
+        function saveCategory() {
+            const categoryName = categoryNameInput.value.trim();
+            if (!categoryName) {
+                categoryModalError.textContent = 'Enter a category name.';
+                categoryModalError.classList.remove('hidden');
+                categoryNameInput.focus();
+                return;
+            }
+            if (categoryName === '__new__') {
+                categoryModalError.textContent = 'That category name is reserved. Choose a different name.';
+                categoryModalError.classList.remove('hidden');
+                categoryNameInput.focus();
+                return;
+            }
+
+            const matchingOption = Array.from(categorySelect.options).find(option =>
+                option.value !== '__new__' && option.value.toLocaleLowerCase() === categoryName.toLocaleLowerCase()
+            );
+            let option = matchingOption;
+
+            if (!option) {
+                option = document.createElement('option');
+                option.value = categoryName;
+                option.textContent = categoryName;
+                categorySelect.insertBefore(option, categorySelect.querySelector('option[value="__new__"]'));
+            }
+
+            categorySelect.value = option.value;
+            previousCategory = option.value;
+            categoryModal.classList.add('hidden');
+            categoryModal.classList.remove('flex');
+            categoryModalError.textContent = '';
+            categoryModalError.classList.add('hidden');
+        }
+
+        categoryModalSave.addEventListener('click', saveCategory);
+        categoryModalClose.addEventListener('click', closeCategoryModal);
+        categoryModalCancel.addEventListener('click', closeCategoryModal);
+        categoryModal.addEventListener('click', function (event) {
+            if (event.target === categoryModal) {
+                closeCategoryModal();
+            }
+        });
+        categoryNameInput.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                saveCategory();
+            }
+        });
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape' && !categoryModal.classList.contains('hidden')) {
+                closeCategoryModal();
+            }
+        });
+
+        if (categorySelect.value === '__new__') {
+            openCategoryModal(false);
+        }
+
         const input = document.getElementById('event-image-input');
         const trigger = document.getElementById('event-image-trigger');
         const emptyState = document.getElementById('event-image-empty');

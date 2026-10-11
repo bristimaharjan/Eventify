@@ -83,20 +83,18 @@
             <!-- ================================= -->
             <!-- EVENT POSTER                      -->
             <!-- ================================= -->
-            <div class="lg:col-span-4 flex justify-center lg:justify-start">
+            <div class="lg:col-span-5 flex justify-center lg:justify-start">
 
                 <div class="relative w-64 sm:w-72 md:w-80 lg:w-full
                             rounded-2xl overflow-hidden
                             shadow-xl
                             border border-gray-200 dark:border-gray-700
                             group bg-gray-100 dark:bg-gray-800
-                            aspect-[3/4]">
+                            aspect-video">
 
                     <img src="{{ $imagePath }}"
                          alt="{{ $event->event_name }}"
-                         class="w-full h-full object-cover
-                                group-hover:scale-105
-                                transition-transform duration-500" />
+                         class="w-full h-full object-cover" />
 
                     @if($event->category)
                         <span class="absolute top-3.5 left-3.5
@@ -148,7 +146,7 @@
             <!-- ================================= -->
             <!-- EVENT INFORMATION                 -->
             <!-- ================================= -->
-            <div class="lg:col-span-8 space-y-5 text-left">
+            <div class="lg:col-span-7 space-y-5 text-left">
 
                 <!-- Badges -->
                 <div class="flex flex-wrap items-center gap-2.5">
@@ -215,7 +213,7 @@
 
 
                 <!-- Event Title -->
-                <h1 class="text-3xl sm:text-4xl lg:text-5xl
+                <h1 class="text-3xl sm:text-4xl lg:text-4xl xl:text-5xl
                            font-black tracking-tight
                            text-gray-900 dark:text-white
                            leading-tight max-w-4xl">
